@@ -131,3 +131,7 @@
 | period_start | string | 经营期起日 |
 | period_end | string | 经营期结束日 |
 | confirmed | boolean | 收件方是否已确认此约定 |
+| timezone | string | 收件方约定时区 |
+| scheduled_at | string | 约定的下一次到期出报时点 |
+| recurrence | string | 本约定为按月订阅 |
+| delivery_key | string | 收件方识别同一期通知的订阅业务键 |

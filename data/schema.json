@@ -299,6 +299,22 @@
         "confirmed": {
           "type": "boolean",
           "description": "收件方是否已确认此约定"
+        },
+        "timezone": {
+          "type": "string",
+          "description": "收件方约定时区"
+        },
+        "scheduled_at": {
+          "type": "string",
+          "description": "约定的下一次到期出报时点"
+        },
+        "recurrence": {
+          "type": "string",
+          "description": "本约定为按月订阅"
+        },
+        "delivery_key": {
+          "type": "string",
+          "description": "收件方识别同一期通知的订阅业务键"
         }
       },
       "references": {}
