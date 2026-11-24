@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>营养指标登记与订阅平台</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<header>
+  <h1>多粒度营养指标平台</h1>
+  <nav>
+    <button class="tab active" data-tab="query">交互查询</button>
+    <button class="tab" data-tab="catalog">指标登记</button>
+    <button class="tab" data-tab="revise">影响预览 / 换版</button>
+    <button class="tab" data-tab="bridge">差异分解</button>
+    <button class="tab" data-tab="subs">订阅确认</button>
+    <button class="tab" data-tab="inbox">收件箱 / 到期出报</button>
+  </nav>
+</header>
+
+<main>
+<!-- ================= 查询 ================= -->
+<section id="tab-query" class="panel active">
+  <h2>业务查询：选择地区、周期、商品层级与专题</h2>
+  <div class="grid">
+    <label>指标<select id="q-metric"></select></label>
+    <label>事实截止规则
+      <select id="q-mode"><option value="replay">replay 复原（只认截止前已确认）</option>
+      <option value="restate">restate 重述（采用截止前后来确认的事实）</option></select>
+    </label>
+    <label>cutoff 时点<input id="q-cutoff" value="2026-03-22T00:00:00+08:00"></label>
+    <label>经营期起<input id="q-start" type="date" value="2026-01-31"></label>
+    <label>经营期止（不含）<input id="q-end" type="date" value="2026-03-02"></label>
+    <label>地区<select id="q-region"><option value="">全部</option></select></label>
+    <label>商品家族<select id="q-family"><option value="">全部</option></select></label>
+    <label>规格<select id="q-spec"><option value="">全部</option></select></label>
+    <label>专题<select id="q-topic"><option value="">不按专题</option></select></label>
+    <label>归属版本<select id="q-attr"><option value="">（涉及专题时必选）</option>
+      <option>v1</option><option>v2</option></select></label>
+    <label>展开维度（多选）<input id="q-group" placeholder="如 region,topic，留空为总计"></label>
+  </div>
+  <button id="q-run">执行查询</button>
+  <div id="q-blocked" class="blocked hidden"></div>
+  <div id="q-result"></div>
+  <details id="q-audit"><summary>这个数字在数什么？口径与资料审计</summary><div id="q-audit-body"></div></details>
+</section>
+
+<!-- ================= 登记 ================= -->
+<section id="tab-catalog" class="panel">
+  <h2>指标登记册（分析员）</h2>
+  <p>每条定义显式登记分母、时间归属、单位、去重对象、可展开维度与可加性。草稿须校核确认后才能被查询/订阅。</p>
+  <div id="catalog-list"></div>
+  <h3>登记新指标</h3>
+  <textarea id="new-metric" rows="16" placeholder='粘贴指标 JSON，例如：
+{
+  "code": "my_ratio",
+  "name": "自定义占比",
+  "owner": "商品部门",
+  "kind": "derived",
+  "description": "……",
+  "unit": "ratio",
+  "time_basis": "operating",
+  "dedup_object": "spec",
+  "numerator": "……",
+  "denominator": "……",
+  "eligible_dims": ["region"],
+  "additivity": "ratio",
+  "expression": "safe_div(sugar_documented_spec_count, sellable_spec_count)"
+}'></textarea>
+  <div class="row">
+    <button id="btn-register">登记为草稿</button>
+    <button id="btn-confirm-selected">校核并确认选中草稿</button>
+    <select id="draft-picker"></select>
+  </div>
+  <pre id="catalog-msg" class="msg"></pre>
+</section>
+
+<!-- ================= 换版 ================= -->
+<section id="tab-revise" class="panel">
+  <h2>换版影响预览与负责人确认</h2>
+  <p>修改分母或把单属改成多属前，先在同一事实截面上对照新旧结果；已定时报告不会悄悄使用新口径。</p>
+  <div class="grid">
+    <label>指标<select id="r-metric"></select></label>
+    <label>预览 cutoff<input id="r-cutoff" value="2026-03-22T00:00:00+08:00"></label>
+    <label>期起<input id="r-start" type="date" value="2026-01-31"></label>
+    <label>期止<input id="r-end" type="date" value="2026-03-02"></label>
+    <label>负责人<input id="r-actor" value="metric-owner"></label>
+  </div>
+  <textarea id="r-changes" rows="8" placeholder='变更字段 JSON，例如 {"denominator": "……", "expression": "safe_div(...)"}'></textarea>
+  <label>换版说明<input id="r-note" value="月度口径修订"></label>
+  <div class="row">
+    <button id="btn-preview">生成影响预览</button>
+    <button id="btn-confirm-rev">负责人确认换版</button>
+  </div>
+  <pre id="revise-msg" class="msg"></pre>
+</section>
+
+<!-- ================= 差异桥 ================= -->
+<section id="tab-bridge" class="panel">
+  <h2>跟上期差异：事实改变 vs 口径改变</h2>
+  <div class="grid">
+    <label>指标<select id="b-metric"></select></label>
+    <label>基线版本<input id="b-base-ver" type="number" value="1"></label>
+    <label>旧截面 cutoff<input id="b-prior" value="2026-03-07T00:00:00+08:00"></label>
+    <label>新截面 cutoff<input id="b-current" value="2026-04-21T00:00:00+08:00"></label>
+    <label>期起<input id="b-start" type="date" value="2026-01-31"></label>
+    <label>期止<input id="b-end" type="date" value="2026-03-02"></label>
+  </div>
+  <button id="btn-bridge">构造差异桥</button>
+  <pre id="bridge-msg" class="msg"></pre>
+</section>
+
+<!-- ================= 订阅 ================= -->
+<section id="tab-subs" class="panel">
+  <h2>订阅确认</h2>
+  <p>订阅锁定指标版本 + 事实截止规则 + 可比较维度。换版后进入「待重新确认」，旧版仍可照发。</p>
+  <div id="sub-list"></div>
+  <h3>新建订阅</h3>
+  <textarea id="new-sub" rows="10" placeholder='{"id":"sub-c","recipient":"ops","metric_code":"net_sales_amount","attribution_version":null,"cutoff_mode":"replay","cutoff":"2026-04-21T00:00:00+08:00","period_start":"2026-03-02","period_end":"2026-04-01","scheduled_at":"2026-04-25T09:00:00+08:00","delivery_key":"monthly-sub-c"}'></textarea>
+  <div class="row"><button id="btn-sub-create">建立订阅</button>
+    <button id="btn-sub-renew">确认选中订阅的续约</button>
+    <select id="sub-picker"></select></div>
+  <pre id="sub-msg" class="msg"></pre>
+</section>
+
+<!-- ================= 收件箱 ================= -->
+<section id="tab-inbox" class="panel">
+  <h2>本地收件箱与到期出报</h2>
+  <label>当前时点<input id="now-at" value="2026-04-08T09:00:00+08:00"></label>
+  <div class="row">
+    <button id="btn-due">执行到期出报（幂等）</button>
+    <button id="btn-refresh-inbox">刷新收件箱</button>
+  </div>
+  <pre id="due-msg" class="msg"></pre>
+  <div id="inbox-list"></div>
+</section>
+</main>
+<script src="app.js"></script>
+</body>
+</html>

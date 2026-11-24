@@ -1,0 +1,120 @@
+{
+  "notice_key": "monthly-sub-b__2026-01-31_2026-03-02",
+  "recipient": "sales-team",
+  "subscription_id": "imp-sub-b",
+  "generated_at": "2026-11-24T08:39:07+00:00",
+  "status": "active",
+  "renewal_reason": null,
+  "data_revision_notice": null,
+  "report": {
+    "delivery_key": "monthly-sub-b",
+    "period": {
+      "start": "2026-01-31",
+      "end": "2026-03-02"
+    },
+    "fact_cross_section": {
+      "mode": "replay",
+      "cutoff": "2026-03-22T00:00:00+08:00",
+      "period_start": "2026-01-31",
+      "period_end": "2026-03-02",
+      "ambiguous_sale_count": 12,
+      "ambiguous_spec_count": 0,
+      "excluded_duplicate_count": 24,
+      "cutoff_notes": [
+        "replay 排除未确认营养资料 n0-0（status=pending）",
+        "replay 排除未确认营养资料 n0-1（status=pending）",
+        "replay 排除未确认营养资料 n9-0（status=pending）",
+        "replay 排除未确认营养资料 n9-1（status=pending）",
+        "replay 排除未确认营养资料 n18-0（status=pending）",
+        "replay 排除未确认营养资料 n18-1（status=pending）"
+      ]
+    },
+    "attribution_version": "v2",
+    "comparable_dims": [
+      "region",
+      "family",
+      "spec",
+      "topic"
+    ],
+    "sections": [
+      {
+        "metric_code": "documented_sales_amount_share",
+        "metric_version": 1,
+        "audit": {
+          "metric_code": "documented_sales_amount_share",
+          "metric_name": "有资料商品的销售金额份额",
+          "version": 1,
+          "status": "confirmed",
+          "owner": "销售部门",
+          "unit": "ratio",
+          "time_basis": "operating",
+          "dedup_object": "receipt_row",
+          "numerator": "documented_sales_amount",
+          "denominator": "gross_sales_amount",
+          "additivity": "ratio",
+          "requires_attribution": null,
+          "window_days": null,
+          "expression": "safe_div(documented_sales_amount, gross_sales_amount)",
+          "lineage": [
+            "表达式 safe_div(documented_sales_amount, gross_sales_amount)",
+            "依赖 documented_sales_amount v1 -> 有完整糖资料规格的成交金额（分）",
+            "依赖 gross_sales_amount v1 -> 成交金额（毛额，分）"
+          ],
+          "fact_context": {
+            "mode": "replay",
+            "cutoff": "2026-03-22T00:00:00+08:00",
+            "period_start": "2026-01-31",
+            "period_end": "2026-03-02",
+            "ambiguous_sale_count": 12,
+            "ambiguous_spec_count": 0,
+            "excluded_duplicate_count": 24,
+            "cutoff_notes": [
+              "replay 排除未确认营养资料 n0-0（status=pending）",
+              "replay 排除未确认营养资料 n0-1（status=pending）",
+              "replay 排除未确认营养资料 n9-0（status=pending）",
+              "replay 排除未确认营养资料 n9-1（status=pending）",
+              "replay 排除未确认营养资料 n18-0（status=pending）",
+              "replay 排除未确认营养资料 n18-1（status=pending）"
+            ]
+          },
+          "blocked_reason": null
+        },
+        "rows": [
+          {
+            "region": null,
+            "family": null,
+            "spec": null,
+            "topic": null,
+            "value": 0.742530851047042,
+            "uncertain_value": 0.6128593452434933,
+            "detail": {
+              "expression": "safe_div(documented_sales_amount, gross_sales_amount)",
+              "components": {
+                "documented_sales_amount": {
+                  "value": 752855.0,
+                  "uncertain_value": 6758.0,
+                  "detail": {
+                    "unit": "minor_amount"
+                  },
+                  "blocked_reason": null
+                },
+                "gross_sales_amount": {
+                  "value": 1013904.0,
+                  "uncertain_value": 11027.0,
+                  "detail": {
+                    "receipt_rows": 805,
+                    "unit": "minor_amount",
+                    "net_of_returns": false
+                  },
+                  "blocked_reason": null
+                }
+              },
+              "aggregation_rule": "按分子/分母在本分组重新计算，不平均下级比率"
+            },
+            "blocked_reason": null
+          }
+        ]
+      }
+    ]
+  }
+}

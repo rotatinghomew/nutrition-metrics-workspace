@@ -1,0 +1,30 @@
+{
+  "code": "sugar_documented_spec_ratio",
+  "name": "有完整糖资料的可售规格占比",
+  "owner": "商品部门",
+  "kind": "derived",
+  "description": "有完整糖资料的可售规格 / 全部可售规格。规格粒度去重，绝不沿专题分项相加。",
+  "unit": "ratio",
+  "time_basis": "operating",
+  "dedup_object": "spec",
+  "numerator": "sugar_documented_spec_count（规格去重）",
+  "denominator": "sellable_spec_count（规格去重）",
+  "eligible_dims": [
+    "region",
+    "family",
+    "spec",
+    "topic"
+  ],
+  "additivity": "ratio",
+  "requires_attribution": null,
+  "expression": "safe_div(sugar_documented_spec_count, sellable_spec_count)",
+  "depends_on": [],
+  "window_days": null,
+  "cohort_basis": null,
+  "version": 1,
+  "status": "confirmed",
+  "created_at": "2026-11-24T08:39:07+00:00",
+  "confirmed_at": "2026-11-24T08:39:07+00:00",
+  "confirmed_by": "seed-owner",
+  "change_note": ""
+}

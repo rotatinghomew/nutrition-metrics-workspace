@@ -1,0 +1,29 @@
+{
+  "code": "collection_refund_amount",
+  "name": "仓储回款期退款金额（分，按实际发生日）",
+  "owner": "仓储部门",
+  "kind": "base",
+  "description": "按退款实际发生日归属的退款金额。回款期口径，只能与经营期净额对照，不能互相充当分母。",
+  "unit": "minor_amount",
+  "time_basis": "collection",
+  "dedup_object": "receipt_row",
+  "numerator": "期内实际发生的退款 amount_minor 合计",
+  "denominator": "无（基础金额）",
+  "eligible_dims": [
+    "region",
+    "family",
+    "spec"
+  ],
+  "additivity": "additive",
+  "requires_attribution": null,
+  "expression": null,
+  "depends_on": [],
+  "window_days": null,
+  "cohort_basis": null,
+  "version": 1,
+  "status": "confirmed",
+  "created_at": "2026-11-24T08:39:07+00:00",
+  "confirmed_at": "2026-11-24T08:39:07+00:00",
+  "confirmed_by": "seed-owner",
+  "change_note": ""
+}
