@@ -1,0 +1,307 @@
+{
+  "format_version": 1,
+  "synthetic": true,
+  "encoding": "UTF-8",
+  "tables": {
+    "specifications": {
+      "description": "可售规格的有效版本",
+      "fields": {
+        "id": {
+          "type": "string",
+          "description": "记录的稳定编号"
+        },
+        "family": {
+          "type": "string",
+          "description": "商品家族"
+        },
+        "code": {
+          "type": "string",
+          "description": "销售使用的商品码"
+        },
+        "valid_from": {
+          "type": "string",
+          "description": "规格有效起日"
+        },
+        "valid_to": {
+          "type": "string",
+          "description": "有效结束日，不包含该日"
+        },
+        "package_g": {
+          "type": "number",
+          "description": "一件净质量克"
+        }
+      },
+      "references": {}
+    },
+    "availability": {
+      "description": "地区日可售情况，未列日期是无回报而非不可售",
+      "fields": {
+        "id": {
+          "type": "string",
+          "description": "记录的稳定编号"
+        },
+        "spec_id": {
+          "type": "string",
+          "description": "规格"
+        },
+        "region": {
+          "type": "string",
+          "description": "地区"
+        },
+        "date": {
+          "type": "string",
+          "description": "销售日"
+        },
+        "sellable": {
+          "type": "boolean",
+          "description": "明确可售状态"
+        },
+        "known_at": {
+          "type": "string",
+          "description": "该回报的获知时点"
+        }
+      },
+      "references": {
+        "spec_id": "specifications"
+      }
+    },
+    "nutrition": {
+      "description": "资料员收到的营养来源数据",
+      "fields": {
+        "id": {
+          "type": "string",
+          "description": "记录的稳定编号"
+        },
+        "spec_id": {
+          "type": "string",
+          "description": "规格"
+        },
+        "valid_from": {
+          "type": "string",
+          "description": "资料适用起日"
+        },
+        "valid_to": {
+          "type": "string",
+          "description": "资料适用结束日"
+        },
+        "known_at": {
+          "type": "string",
+          "description": "资料收到时间"
+        },
+        "basis": {
+          "type": "string",
+          "description": "per100g或perServing"
+        },
+        "basis_g": {
+          "type": "number",
+          "description": "每份实际克数；per100g时为100"
+        },
+        "sugar_g": {
+          "type": "nullable_number",
+          "description": "该基准下的总糖克数；null为缺失"
+        },
+        "status": {
+          "type": "string",
+          "description": "来源状态：confirmed或pending"
+        }
+      },
+      "references": {
+        "spec_id": "specifications"
+      }
+    },
+    "sales": {
+      "description": "小票商品行事实，金额单位分",
+      "fields": {
+        "id": {
+          "type": "string",
+          "description": "记录的稳定编号"
+        },
+        "receipt": {
+          "type": "string",
+          "description": "收银小票编号"
+        },
+        "household": {
+          "type": "string",
+          "description": "本用途匿名家庭键"
+        },
+        "spec_id": {
+          "type": "string",
+          "description": "商品规格"
+        },
+        "region": {
+          "type": "string",
+          "description": "成交地区"
+        },
+        "sold_at": {
+          "type": "string",
+          "description": "成交时点"
+        },
+        "known_at": {
+          "type": "string",
+          "description": "资料可用时点"
+        },
+        "units": {
+          "type": "number",
+          "description": "购买件数"
+        },
+        "amount_minor": {
+          "type": "number",
+          "description": "实际成交金额分"
+        },
+        "duplicate_of": {
+          "type": "string",
+          "description": "确认为重复报送的原行；空串表示未确认重复"
+        },
+        "sale_code": {
+          "type": "string",
+          "description": "小票实际商品码；legacy0的映射仍有争议，不能因暂用spec_id就消除原始歧义"
+        }
+      },
+      "references": {
+        "spec_id": "specifications"
+      }
+    },
+    "returns": {
+      "description": "按原小票行登记的退款",
+      "fields": {
+        "id": {
+          "type": "string",
+          "description": "记录的稳定编号"
+        },
+        "sale_id": {
+          "type": "string",
+          "description": "原成交行"
+        },
+        "occurred_at": {
+          "type": "string",
+          "description": "实际退款时点"
+        },
+        "known_at": {
+          "type": "string",
+          "description": "收到退款资料时点"
+        },
+        "amount_minor": {
+          "type": "number",
+          "description": "本笔退款金额分"
+        }
+      },
+      "references": {
+        "sale_id": "sales"
+      }
+    },
+    "topic_memberships": {
+      "description": "专题负责人给出的单属和多属原始关系",
+      "fields": {
+        "id": {
+          "type": "string",
+          "description": "记录的稳定编号"
+        },
+        "spec_id": {
+          "type": "string",
+          "description": "规格"
+        },
+        "topic": {
+          "type": "string",
+          "description": "专题"
+        },
+        "version": {
+          "type": "string",
+          "description": "归属版本"
+        },
+        "share": {
+          "type": "number",
+          "description": "该版本登记的分配份额；多属展示关系可为1"
+        },
+        "valid_from": {
+          "type": "string",
+          "description": "关系开始日期"
+        },
+        "valid_to": {
+          "type": "string",
+          "description": "关系结束日期"
+        },
+        "known_at": {
+          "type": "string",
+          "description": "关系获知时点"
+        }
+      },
+      "references": {
+        "spec_id": "specifications"
+      }
+    },
+    "code_links": {
+      "description": "换码复核来件，允许尚有冲突的映射",
+      "fields": {
+        "id": {
+          "type": "string",
+          "description": "记录的稳定编号"
+        },
+        "old_code": {
+          "type": "string",
+          "description": "旧码"
+        },
+        "new_spec": {
+          "type": "string",
+          "description": "可能的现规格"
+        },
+        "from_date": {
+          "type": "string",
+          "description": "适用开始日"
+        },
+        "to_date": {
+          "type": "string",
+          "description": "适用结束日"
+        },
+        "known_at": {
+          "type": "string",
+          "description": "收到时间"
+        },
+        "confirmed": {
+          "type": "boolean",
+          "description": "该映射是否已确认"
+        }
+      },
+      "references": {
+        "new_spec": "specifications"
+      }
+    },
+    "report_agreements": {
+      "description": "收件方已有的订阅约定，不是查询实现",
+      "fields": {
+        "id": {
+          "type": "string",
+          "description": "记录的稳定编号"
+        },
+        "recipient": {
+          "type": "string",
+          "description": "本地收件方"
+        },
+        "metric_name": {
+          "type": "string",
+          "description": "原约定的度量名称"
+        },
+        "attribution_version": {
+          "type": "string",
+          "description": "锁定的专题归属版"
+        },
+        "cutoff": {
+          "type": "string",
+          "description": "原约定的事实截止时间"
+        },
+        "period_start": {
+          "type": "string",
+          "description": "经营期起日"
+        },
+        "period_end": {
+          "type": "string",
+          "description": "经营期结束日"
+        },
+        "confirmed": {
+          "type": "boolean",
+          "description": "收件方是否已确认此约定"
+        }
+      },
+      "references": {}
+    }
+  }
+}
